@@ -1,11 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import googleImg from "../../assets/img/icons/common/google.svg";
 import telegramImg from "../../assets/img/icons/common/telegram.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 const Register = () => {
+  const[userData,setUserData] = useState('')
+  const navigate = useNavigate()
+  const handleSubmit =async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const userName = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const mobileNo = form.mobileNo.value;
+    const referalCode = form.refferalCode.value || "root";
+    const status = "1";
+    const role = "client";
+
+    const formdata = new FormData();
+    formdata.append("name", userName);
+    formdata.append("email", email);
+    formdata.append("password", password);
+    formdata.append("referal_code", referalCode);
+    formdata.append("mobile_no", mobileNo);
+    formdata.append("status", status);
+    formdata.append("role", role);
+console.log(formdata)
+
+    const emailData = {
+      to: email,
+     
+  };
+
+    axios
+      .post(
+        "https://indian.munihaelectronics.com/public/api/create-user",
+        formdata
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios
+      .post("https://indian.munihaelectronics.com/public/api/login", formdata)
+      .then((response) => {
+        const user = response.data;
+        setUserData(user);
+        window.localStorage.setItem("userInfo", JSON.stringify(user));
+        console.log(response);
+        if (response.data.status === "1") {
+          window.localStorage.setItem("user-loggedIn", true);
+          // Successful login
+          navigate('/');
+          // loginAlert();
+          try {
+            const response = axios.post('https://indian.munihaelectronics.com/public/api/send-welcome-email', emailData);
+            if (response.status === 200) {
+           
+            } else {
+                // Display error message to the user
+            }
+        } catch (error) {
+            // Handle errors
+        }
+        } else if (response.data.status === "0") {
+          console.error(error);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+     
+  };
   return (
     <div className=" mt-5  p-1 ">
-      <form class="max-w-sm mx-auto shadow-2xl rounded p-5 bg-white w-96">
+      <form class="max-w-sm mx-auto shadow-2xl rounded p-5 bg-white w-96" onSubmit={handleSubmit}>
         <div className=" text-center mt-2 mb-3">
           <small className="text-gray-400 font-semibold">Sign up with</small>
         </div>
@@ -43,6 +115,7 @@ const Register = () => {
           <i class="fa-solid fa-user text-info"></i>
           <input
             type="text"
+            name="name"
             placeholder="Your Name"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
@@ -57,7 +130,7 @@ const Register = () => {
           </label>
           <input
             type="email"
-            id="email"
+            name="email"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             placeholder="name@gmail.com"
             required
@@ -73,6 +146,7 @@ const Register = () => {
           </label>
           <input
             type="password"
+            name="password"
             placeholder="****"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
@@ -87,6 +161,7 @@ const Register = () => {
           </label>
           <input
             type="number"
+            name="mobileNo"
             placeholder="019"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
@@ -101,9 +176,9 @@ const Register = () => {
           </label>
           <input
             type="text"
-            
+            name="refferalCode"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-            required
+            
           />
         </div>
         <div class="flex items-start mb-5">
@@ -117,7 +192,7 @@ const Register = () => {
             />
           </div>
           <label
-            for="terms"
+           
             class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
             I agree with the{" "}
