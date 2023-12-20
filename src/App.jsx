@@ -11,6 +11,9 @@ import "./charts/ChartjsConfig";
 import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
 import Borhan from "./pages/Borhan";
+import ChoosePlan from "./pages/Investment Funding/ChoosePlan";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Login/Register";
 
 function App() {
   const location = useLocation();
@@ -27,7 +30,10 @@ function App() {
         <Route exact path="/" element={<Dashboard />}>
           <Route index element={<DashboardHome />} />
           <Route path="/borhan" element={<Borhan />} />
+          <Route path="/chosePlan" element={<ChoosePlan />} />
         </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
