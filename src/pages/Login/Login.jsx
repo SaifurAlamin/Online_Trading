@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import googleImg from "../../assets/img/icons/common/google.svg";
 import telegramImg from "../../assets/img/icons/common/telegram.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 const Login = () => {
+  const [userData, setUserData] = useState("");
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -18,7 +21,7 @@ const Login = () => {
         // window.localStorage.setItem('user-loggedIn', true)
         const user = response.data;
         console.log(user)
-        setUser(user);
+        setUserData(user);
         window.localStorage.setItem('userInfo', JSON.stringify(user))
 
         console.log(response);
@@ -29,7 +32,7 @@ const Login = () => {
         else if (response.data.status === '1' && response?.data.role === 'client') {
           window.localStorage.setItem('user-loggedIn', true)
           // Successful login
-          navigate(from, { replace: true });
+          navigate('/')
           // <Navigate to={'/admin/index'} state={{ from: location }} replace />
           // loginAlert();
         } else if (response.data.status === '0') {
@@ -47,7 +50,7 @@ const Login = () => {
   }
   return (
     <div className="container mx-auto mt-5  p-1">
-      <form class="max-w-sm mx-auto shadow-2xl rounded p-5 bg-white">
+      <form class="max-w-sm mx-auto shadow-2xl rounded p-5 bg-white" onSubmit={handleSubmit}>
         <div className=" text-center mt-2 mb-3">
           <small className="text-gray-400 font-semibold">Sign in with</small>
         </div>
@@ -85,7 +88,7 @@ const Login = () => {
           
           <input
             type="email"
-            id="email"
+            name="email"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             placeholder="name@flowbite.com"
             required
@@ -100,12 +103,12 @@ const Login = () => {
           </label>
           <input
             type="password"
-            id="password"
+            name="password"
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
         </div>
-        <div class="mb-5">
+        {/* <div class="mb-5">
           <label
             for="repeat-password"
             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -118,7 +121,7 @@ const Login = () => {
             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
-        </div>
+        </div> */}
         <div class="flex items-start mb-5">
           <div class="flex items-center h-5">
             <input
