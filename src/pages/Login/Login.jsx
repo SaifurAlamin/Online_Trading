@@ -27,7 +27,6 @@ const Login = () => {
       const response = await fetch(loginApiUrl);
       const jsonData = await response.json();
       setSessionToken(jsonData.session);
-      console.log(jsonData);
     } catch (error) {
       console.error("Error fetching session token:", error);
     }

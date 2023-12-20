@@ -14,6 +14,7 @@ import Borhan from "./pages/Borhan";
 import ChoosePlan from "./pages/Investment Funding/ChoosePlan";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Login/Register";
+import Tradehistory from "./pages/TradeHistory/Tradehistory";
 
 function App() {
   const location = useLocation();
@@ -31,9 +32,10 @@ function App() {
           <Route index element={<DashboardHome />} />
           <Route path="/borhan" element={<Borhan />} />
           <Route path="/chosePlan" element={<ChoosePlan />} />
+          <Route path="/trade-history" element={<Tradehistory />} />
         </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
