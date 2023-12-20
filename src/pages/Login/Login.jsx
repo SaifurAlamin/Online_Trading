@@ -6,6 +6,31 @@ import axios from "axios";
 const Login = () => {
   const [userData, setUserData] = useState("");
   const navigate = useNavigate()
+
+
+   // Login API parameters
+   const email = 'tanmoysom@gmail.com';
+   const password = '973257o425@MFXB';
+   const loginApiUrl = `https://www.myfxbook.com/api/login.json?email=${email}&password=${password}`;
+ 
+   // Second API parameters
+   const accountId = 10125757;
+   const historyApiUrl = `https://www.myfxbook.com/api/get-history.json?session=${sessionToken}&id=${accountId}`;
+ 
+   const fetchSessionToken = async () => {
+     try {
+       const response = await fetch(loginApiUrl);
+       const jsonData = await response.json();
+       setSessionToken(jsonData.session);
+       console.log(jsonData);
+ 
+ 
+ 
+     } catch (error) {
+       console.error('Error fetching session token:', error);
+     }
+   };
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
